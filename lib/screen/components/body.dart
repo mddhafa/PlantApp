@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'featurred_plants.dart';
 import 'package:plantapp/screen/components/header_with_searchbox.dart';
-// import 'recomend_plants.dart';
-// import 'title_with_more_bbtn.dart';
+import 'title_with_more_bbtn.dart';
+
+const double kDefaultPadding = 20.0;
 
 class Body extends StatelessWidget {
   @override
@@ -13,10 +13,7 @@ class Body extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           HeaderWithSearchBox(size: size),
-          // TitleWithMoreBtn(title: "Recomended", press: () {}),
-          // RecomendsPlants(),
-          // TitleWithMoreBtn(title: "Featured Plants", press: () {}),
-          // FeaturedPlants(),
+          TitleWithMoreBtn(title: "Recomended"),
           SizedBox(height: kDefaultPadding),
         ],
       ),
