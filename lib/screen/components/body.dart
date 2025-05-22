@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:plantapp/screen/components/header_with_searchbox.dart';
+import 'recomend_plants.dart';
 import 'title_with_more_bbtn.dart';
 
 const double kDefaultPadding = 20.0;
@@ -14,6 +15,7 @@ class Body extends StatelessWidget {
         children: <Widget>[
           HeaderWithSearchBox(size: size),
           TitleWithMoreBtn(title: "Recomended"),
+          RecomendsPlants(),
           SizedBox(height: kDefaultPadding),
         ],
       ),
