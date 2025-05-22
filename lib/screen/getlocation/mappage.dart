@@ -75,5 +75,53 @@ class _MapPageState extends State<MapPage> {
     return await Geolocator.getCurrentPosition();
   }
 
+  Future<void> _onTap(LatLng latLng) async {
+    final placemarks = await placemarkFromCoordinates(
+      latLng.latitude,
+      latLng.longitude,
+    );
+    final p = placemarks.first;
+    setState(() {
+      _pickedMarker = Marker(
+        markerId: const MarkerId('picked'),
+        position: latLng,
+        infoWindow: InfoWindow(
+          title: p.name?.isNotEmpty == true ? p.name : 'Lokasi dipilih',
+          snippet: '${p.locality}, ${p.country} ',
+        ),
+      );
+    });
+    final ctrl = await _ctrl.future;
+    await ctrl.animateCamera(CameraUpdate.newLatLngZoom(latLng, 16));
+    setState(() {
+      _pickedAddress =
+          '${p.name}, ${p.street}, ${p.locality}, ${p.country}, ${p.postalCode}';
+    });
+  }
+
+  void _confirmSelection() {
+    showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: const Text('Konfirmasi'),
+            content: Text(_pickedAddress ?? ''),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Batal'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context, _pickedAddress);
+                },
+                child: const Text('Pilih'),
+              ),
+            ],
+          ),
+    );
+  }
+
   
 }
