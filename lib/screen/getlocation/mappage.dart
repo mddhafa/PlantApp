@@ -53,4 +53,27 @@ class _MapPageState extends State<MapPage> {
       ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
+
+  Future<Position> getPermissions() async {
+    //1. cek service gps
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      throw ('Location service belum aktif');
+    }
+
+    //2. cek dan minta permission
+    LocationPermission perm = await Geolocator.checkPermission();
+    if (perm == LocationPermission.denied) {
+      perm = await Geolocator.requestPermission();
+      if (perm == LocationPermission.denied) {
+        throw ('Permission ditolak');
+      }
+    }
+    if (perm == LocationPermission.deniedForever) {
+      throw ('Permission ditolak selamanya');
+    }
+    //3. ambil posisi
+    return await Geolocator.getCurrentPosition();
+  }
+
+  
 }
