@@ -3,6 +3,39 @@ import 'package:flutter/material.dart';
 const double kDefaultPadding = 20.0;
 const Color kPrimaryColor = Color(0xFF00DDFF);
 
+class RecomendsPlants extends StatelessWidget {
+  const RecomendsPlants({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: const <Widget>[
+          RecomendPlantCard(
+            image: "assets/images/produk1.jpg",
+            title: "Tas Kerir",
+            country: "Enim",
+            price: 440,
+          ),
+          RecomendPlantCard(
+            image: "assets/images/produk2.png",
+            title: "Angelica",
+            country: "Russia",
+            price: 440,
+          ),
+          RecomendPlantCard(
+            image: "assets/images/produk3.jpg",
+            title: "Angelo",
+            country: "America",
+            price: 440,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class RecomendPlantCard extends StatelessWidget {
   const RecomendPlantCard({
     super.key,
