@@ -123,5 +123,111 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  
+  @override
+  Widget build(BuildContext context) {
+    if (_initialCamera == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text('Get Location'),
+        backgroundColor: const Color.fromARGB(255, 0, 221, 255),
+        foregroundColor: Colors.black,
+      ),
+      body: SafeArea(
+        child: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: _initialCamera!,
+              myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              mapType: MapType.normal,
+              compassEnabled: true,
+              tiltGesturesEnabled: false,
+              scrollGesturesEnabled: true,
+              zoomGesturesEnabled: true,
+              rotateGesturesEnabled: true,
+              trafficEnabled: true,
+              buildingsEnabled: true,
+              indoorViewEnabled: true,
+              onMapCreated: (GoogleMapController ctrl) {
+                _ctrl.complete(ctrl);
+              },
+
+              markers: _pickedMarker != null ? {_pickedMarker!} : {},
+              onTap: _onTap,
+            ),
+            Positioned(
+              top: 10,
+              left: 56,
+
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (_pickedAddress != null)
+              Positioned(
+                bottom: 120,
+                left: 16,
+                right: 16,
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Text(
+                      _pickedAddress!,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 8),
+          FloatingActionButton.extended(
+            onPressed: () {
+              _confirmSelection();
+            },
+            heroTag: 'confirm',
+            label: const Text('Pilih lokasi'),
+          ),
+
+          const SizedBox(height: 8),
+          if (_pickedAddress != null)
+            FloatingActionButton.extended(
+              heroTag: 'clear',
+              label: const Text('Hapus lokasi'),
+              onPressed: () {
+                setState(() {
+                  _pickedMarker = null;
+                  _pickedAddress = null;
+                });
+              },
+            ),
+        ],
+      ),
+    );
+  }
 }
